@@ -37,3 +37,7 @@ models:
       +enabled: true
       +materialized: table
       +schema: stg_sumup_dwh_23
+    warehouse:
+      +enabled: true
+      +materialized: table
+      +schema: dwh_sumup_dwh_23
