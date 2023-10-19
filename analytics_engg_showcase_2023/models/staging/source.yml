@@ -1,0 +1,9 @@
+version: 2
+sources:
+  - name : sumup_dwh_23
+    schema : sumup_dwh_23
+    tables :
+      - name : device
+      - name : store
+      - name : transaction
+
