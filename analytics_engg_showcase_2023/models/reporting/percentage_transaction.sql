@@ -1,3 +1,4 @@
+
 with store_device as (
 
 select d.id as device_id, 
@@ -25,9 +26,10 @@ store_device_trans as (
   on sd.device_id = t.device_id
 )
 
-select store_id, sum(amount) as total_amount
-from store_device_trans
-where status = 'accepted'
-group by store_id
-order by total_amount desc
-limit 10
+select type as device_type,(count_device/total)*100 as transaction_percentage from (
+  select type, count(*) count_device , sum(count(*)) over() as total  from 
+  store_device_trans 
+  where status = 'accepted'
+  group by type
+  order by count_device desc 
+)

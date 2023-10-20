@@ -25,9 +25,8 @@ store_device_trans as (
   on sd.device_id = t.device_id
 )
 
-select store_id, sum(amount) as total_amount
-from store_device_trans
-where status = 'accepted'
+select store_id, date_diff(max(happened_at), min(happened_at), day) as day_diff from (
+select store_id, happened_at, row_number() over (partition by store_id) as payment_rank
+from store_device_trans ) ranks
+where payment_rank <=5
 group by store_id
-order by total_amount desc
-limit 10
