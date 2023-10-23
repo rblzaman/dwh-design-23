@@ -1,35 +1,10 @@
 
-with store_device as (
-
-select d.id as device_id, 
-d.type, 
-d.store_id,
-s.name,
-s.city,
-s.country,
-s.typology
-from {{ ref ('stg_device')}} d
-left join {{ref ('stg_store')}}  s
-on d.store_id = s.id
-),
-
-store_device_trans as (
-  select sd.* , 
-    t.id as transaction_id,
-    t.product_name,
-    t.amount,
-    t.category_name,
-    t.status,
-    t.happened_at
-  from store_device sd
-  right join {{ ref ('stg_transaction')}} t
-  on sd.device_id = t.device_id
-)
-
 select type as device_type,(count_device/total)*100 as transaction_percentage from (
-  select type, count(*) count_device , sum(count(*)) over() as total  from 
-  store_device_trans 
+  select type, count(*) count_device , sum(count(*)) over() as total   
+  from {{ ref ('dwh_dev_store_trans')}}
   where status = 'accepted'
   group by type
   order by count_device desc 
 )
+
+

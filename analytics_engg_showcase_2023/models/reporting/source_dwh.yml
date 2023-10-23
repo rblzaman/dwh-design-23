@@ -1,0 +1,7 @@
+version: 2
+sources:
+  - name : dbt_zaman_dwh_sumup_dwh_23
+    schema : dbt_zaman_dwh_sumup_dwh_23
+    tables :
+      - name : dwh_dev_store_trans
+      
